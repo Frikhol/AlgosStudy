@@ -11,7 +11,7 @@ public class QuickSort {
         for (int i = 0; i < n; i++) {
             arr[i] = sc.nextInt();
         }
-        quickSort(arr,0,n);
+        quickSort(arr,0,n-1);
         for (int i = 0; i < n; i++) {
             System.out.print(arr[i]);
             if(i<n-1) System.out.print(" ");
@@ -19,19 +19,27 @@ public class QuickSort {
     }
 
     public static void quickSort(int[] arr, int l, int r){
-        if(l==r)
+        if(l>=r)
             return;
-        int pivot = arr[l];
-        int j = l;
-        int i = l+1;
-        while(i<r) {
-            if (arr[i] <= pivot)
-                swap(arr, i, ++j);
-            i++;
+        int p = part(arr,l,r);
+        quickSort(arr,l,p);
+        quickSort(arr,p+1,r);
+    }
+
+    public static int part(int [] arr, int l, int r){
+        int pivot = arr[(r+l) / 2];
+        int i = l;
+        int j = r;
+        while(true) {
+            while(i<=r && arr[i] < pivot)
+                i++;
+            while(j>=l && arr[j] > pivot)
+                j--;
+            if(i>=j)
+                break;
+            swap(arr,i++,j--);
         }
-        swap(arr,l,j);
-        quickSort(arr,l,j);
-        quickSort(arr,j+1,r);
+        return j;
     }
 
     public static void swap(int[] arr,int i,int j){
